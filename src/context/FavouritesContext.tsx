@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import type { ReactNode } from "react";
-import useLocalStorage from "@/hooks/useLoacalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 interface favouritesListType{
             id:number,

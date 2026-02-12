@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import { FavouritesContext } from "@/context/FavouritesContext";
-import { Search, Star, MapPin, Loader2, BookMarked } from "lucide-react";
+import { Search, Star, MapPin, Loader2, BookMarked, X } from "lucide-react";
 import ButtonsForSearchBarComponent from "./ButtonsForSearchBarComponent";
 import type { Dispatch, SetStateAction } from "react";
 import Favourites from "./Favourites";
@@ -77,6 +77,10 @@ export default function SearchBar({ setCity }: SearchBarProps) {
     setIsSelected(true);
   };
 
+  const handleClear=()=>{
+    setSearchVal("")
+   }
+
   return (
     <section className="w-full max-w-4xl mx-auto px-4 py-6">
       <div
@@ -110,7 +114,7 @@ export default function SearchBar({ setCity }: SearchBarProps) {
               if (suggestions.length > 0) setShowSuggestions(true);
             }}
           />
-
+      
           {showSuggestions && suggestions.length > 0 && (
             <div className="absolute top-full left-0 right-0 mt-2 z-50">
               <ul
@@ -189,6 +193,13 @@ export default function SearchBar({ setCity }: SearchBarProps) {
         </div>
         {/* //end  */}
 
+        { searchVal && <ButtonsForSearchBarComponent
+          icon={X}
+          onClick={handleClear}
+        >
+          Clear Input
+        </ButtonsForSearchBarComponent> }
+
         <ButtonsForSearchBarComponent
           icon={Search}
           onClick={() => {
@@ -201,6 +212,7 @@ export default function SearchBar({ setCity }: SearchBarProps) {
         >
           Search
         </ButtonsForSearchBarComponent>
+        {/* { searchVal && (<button onClick={handleClear}><X size={18}/></button>) } */}
 
         <ButtonsForSearchBarComponent
           icon={Star}

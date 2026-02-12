@@ -113,7 +113,14 @@ export default function SearchBar({ setCity }: SearchBarProps) {
 
   const handleToggleFavourite = () => {
     if (!searchVal.trim()) return;
-
+    if(!isSelected){
+      setToast({
+        show: true,
+        message: "Select a valid city from suggesstions to add favourites",
+        type: "error",
+      });
+      return;
+    }
     if (!isFavourite) {
       addToFavourites(searchVal);
       setToast({

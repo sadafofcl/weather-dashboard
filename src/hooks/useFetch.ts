@@ -22,7 +22,7 @@ export default function useFetch({city}:props){
                     const todaysDataJson = await todaysData.json();
                     setCurrWeatherData(todaysDataJson);
                     
-                    //will change 
+                    //will make it reusable 
                     
                     const forcastingData=await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=34f1a0bb9f6e351772d63ee557da9c6e&units=metric`);
 

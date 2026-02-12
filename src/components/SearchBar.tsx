@@ -5,6 +5,7 @@ import { Search, Star, MapPin, Loader2, BookMarked, X } from "lucide-react";
 import ButtonsForSearchBarComponent from "./ButtonsForSearchBarComponent";
 import type { Dispatch, SetStateAction } from "react";
 import Favourites from "./Favourites";
+import Toast from "./Toast";
 
 interface City {
   lat: number;
@@ -25,9 +26,15 @@ export default function SearchBar({ setCity }: SearchBarProps) {
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+  
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    type: "info" as "success" | "error" | "info",
+  })
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const { addToFavourites } = useContext(FavouritesContext);
+  const { favouritesList,addToFavourites, removeFromFavourites } = useContext(FavouritesContext);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -77,9 +84,45 @@ export default function SearchBar({ setCity }: SearchBarProps) {
     setIsSelected(true);
   };
 
-  const handleClear=()=>{
-    setSearchVal("")
-   }
+  const handleClear = () => {
+    setSearchVal("");
+  };
+
+  const [highlight, setHighlight] = useState<number>(-1);
+
+  const handleKeyboardSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!suggestions.length && e.key !== "Enter") return;
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setHighlight((prev) => (prev < suggestions.length - 1 ? prev + 1 : 0));
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setHighlight((prev) => (prev > 0 ? prev - 1 : suggestions.length - 1));
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (highlight >= 0 && suggestions[highlight]) {
+          handleClick(suggestions[highlight]);
+        } else if (searchVal.trim()) {
+          setIsSelected(true);
+          setCity(searchVal);
+          setSuggestions([]);
+          setShowSuggestions(false);
+        }
+        break;
+
+      case "Escape":
+        setShowSuggestions(false);
+        setHighlight(-1);
+        break;
+    }
+  }
+
+  const isFavourite = favouritesList.some(
+  (item) => item.favCity === searchVal
+);
 
   return (
     <section className="w-full max-w-4xl mx-auto px-4 py-6">
@@ -87,6 +130,13 @@ export default function SearchBar({ setCity }: SearchBarProps) {
         className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center"
         ref={wrapperRef}
       >
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          show={toast.show}
+          onClose={() => setToast({ ...toast, show: false })}
+        />
+
         {/* //start search input and suggestion */}
         <div className="relative flex-1">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
@@ -113,8 +163,9 @@ export default function SearchBar({ setCity }: SearchBarProps) {
             onFocus={() => {
               if (suggestions.length > 0) setShowSuggestions(true);
             }}
+            onKeyDown={handleKeyboardSearch}
           />
-      
+
           {showSuggestions && suggestions.length > 0 && (
             <div className="absolute top-full left-0 right-0 mt-2 z-50">
               <ul
@@ -135,11 +186,13 @@ export default function SearchBar({ setCity }: SearchBarProps) {
                 {suggestions.map((city, index) => (
                   <li
                     key={`${city.lat}-${city.lon}-${index}`}
-                    className="group p-4 hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50
-                                                   dark:hover:from-purple-900/30 dark:hover:to-pink-900/30
-                                                   cursor-pointer transition-all duration-150
-                                                   border-b border-gray-200 dark:border-gray-700
-                                                   last:border-b-0"
+                    className={`group p-4 cursor-pointer transition-all duration-150
+                      border-b border-gray-200 dark:border-gray-700 last:border-b-0
+                      ${
+                        highlight === index
+                          ? "bg-purple-100 dark:bg-purple-900/40"
+                          : "hover:bg-linear-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30"
+                      }`}
                     onClick={() => handleClick(city)}
                   >
                     <div className="flex items-start gap-3">
@@ -193,12 +246,11 @@ export default function SearchBar({ setCity }: SearchBarProps) {
         </div>
         {/* //end  */}
 
-        { searchVal && <ButtonsForSearchBarComponent
-          icon={X}
-          onClick={handleClear}
-        >
-          Clear Input
-        </ButtonsForSearchBarComponent> }
+        {searchVal && (
+          <ButtonsForSearchBarComponent icon={X} onClick={handleClear}>
+            Clear Input
+          </ButtonsForSearchBarComponent>
+        )}
 
         <ButtonsForSearchBarComponent
           icon={Search}
@@ -212,16 +264,37 @@ export default function SearchBar({ setCity }: SearchBarProps) {
         >
           Search
         </ButtonsForSearchBarComponent>
-        {/* { searchVal && (<button onClick={handleClear}><X size={18}/></button>) } */}
 
         <ButtonsForSearchBarComponent
-          icon={Star}
-          variant="warning"
-          onClick={() => addToFavourites(searchVal)}
-          disabled={!searchVal.trim()}
-        >
-          Favorite
-        </ButtonsForSearchBarComponent>
+            icon={Star}
+            variant="warning"
+            onClick={() => {
+              if (!searchVal.trim()) return;
+
+              if (!isFavourite) {
+                addToFavourites(searchVal);
+
+                setToast({
+                  show: true,
+                  message: "City added to favourites",
+                  type: "success",
+                });
+              } else {
+                removeFromFavourites(searchVal);
+
+                setToast({
+                  show: true,
+                  message: "City removed from favourites",
+                  type: "error",
+                });
+              }
+            }}
+            disabled={!searchVal.trim()}
+          >
+            {isFavourite ? "Remove Favourite" : "Add Favorite"}
+          </ButtonsForSearchBarComponent>
+
+
 
         <Favourites
           setCity={setCity}

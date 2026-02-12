@@ -11,7 +11,7 @@ interface favouritesListType{
 interface favouritesContextTypes{
     favouritesList : favouritesListType[],
     addToFavourites:(city:string)=>void ,
-    removeFromFavourites:(id:number)=>void,
+    removeFromFavourites:(favCity:string)=>void,
 }
 
 export const FavouritesContext = createContext<favouritesContextTypes>({
@@ -36,9 +36,11 @@ export const FavouritesContextProvider = ({children}:{children:ReactNode}) =>
     })
     }
 
-    const removeFromFavourites = (id:number) =>{
+    // const removeFromFavourites = (id:number) =>{
+    const removeFromFavourites = (favCity:string) =>{
+
         setFavouritesList( prev => 
-            prev.filter( item => item.id !== id ) )
+            prev.filter( item => item.favCity !== favCity ) )
     }
 
    

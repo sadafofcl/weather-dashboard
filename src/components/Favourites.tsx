@@ -68,7 +68,9 @@ export default function Favourites({ setCity, button }: FavouritesProps) {
                   </span>
 
                   <button
-                    onClick={() => handleCheckWeather(element.favCity)}
+                    onClick={() => handleCheckWeather(element.favCity)
+
+                    }
                     className="
                       px-3 py-1.5 rounded-md
                       bg-teal-500 hover:bg-teal-600
@@ -81,7 +83,7 @@ export default function Favourites({ setCity, button }: FavouritesProps) {
                   </button>
 
                   <button
-                    onClick={() => removeFromFavourites(element.id)}
+                    onClick={() => removeFromFavourites(element.favCity)}
                     className="
                       px-3 py-1.5 rounded-md
                       bg-rose-500 hover:bg-rose-600

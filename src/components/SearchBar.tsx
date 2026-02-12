@@ -88,13 +88,7 @@ export default function SearchBar({ setCity }: SearchBarProps) {
   const handleSearchSubmit = () => {
     if (!searchVal.trim()) return;
 
-    const match = suggestions.find(
-      (city) =>
-        `${city.name}${city.state ? `, ${city.state}` : ""}, ${city.country}`.toLowerCase() ===
-        searchVal.toLowerCase(),
-    );
-
-    if (!match) {
+    if (!isSelected) {
       setToast({
         show: true,
         message: "Please select a valid city from suggestions",
@@ -103,17 +97,18 @@ export default function SearchBar({ setCity }: SearchBarProps) {
       return;
     }
 
-    selectCity(searchVal);
+    setCity(searchVal);
   };
 
   const handleClear = () => {
     setSearchVal("");
+    setIsSelected(false);
     resetSuggestions();
   };
 
   const handleToggleFavourite = () => {
     if (!searchVal.trim()) return;
-    if(!isSelected){
+    if (!isSelected) {
       setToast({
         show: true,
         message: "Select a valid city from suggesstions to add favourites",

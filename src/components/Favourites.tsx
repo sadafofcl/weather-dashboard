@@ -29,7 +29,7 @@ export default function Favourites({ setCity, button }: FavouritesProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <span>{button}</span>
+        {button}
       </DialogTrigger>
 
       <DialogContent className="max-w-2xl">

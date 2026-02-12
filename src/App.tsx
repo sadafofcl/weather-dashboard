@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 import NetworkComponent from './components/NetworkComponent';
 
 function App() {
- const [city, setCity] = useState<string>("Mumbai")
+ const [city, setCity] = useState<string>("Delhi")
   const { currWeatherData, forcastData, loading, error, fetchWeatherByCoords}=useFetch({city});
 
   return (

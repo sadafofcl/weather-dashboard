@@ -8,12 +8,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 
 interface FavouritesProps {
-  setCity: Dispatch<SetStateAction<string>>,
-  button: ReactNode
+  setCity: Dispatch<SetStateAction<string>>;
+  button: ReactNode;
 }
 
 export default function Favourites({ setCity, button }: FavouritesProps) {
@@ -27,7 +28,9 @@ export default function Favourites({ setCity, button }: FavouritesProps) {
 
   return (
     <Dialog>
-      <DialogTrigger asChild><span>{button}</span></DialogTrigger>
+      <DialogTrigger asChild>
+        <span>{button}</span>
+      </DialogTrigger>
 
       <DialogContent className="max-w-2xl">
         <DialogHeader>
@@ -46,9 +49,7 @@ export default function Favourites({ setCity, button }: FavouritesProps) {
 
         <div className="no-scrollbar max-h-[50vh] overflow-y-auto">
           {favouritesList.length === 0 ? (
-            <p className="text-center text-gray-500 py-8">
-              No favourites yet
-            </p>
+            <p className="text-center text-gray-500 py-8">No favourites yet</p>
           ) : (
             <ul className="space-y-3">
               {favouritesList.map((element) => (
@@ -67,20 +68,22 @@ export default function Favourites({ setCity, button }: FavouritesProps) {
                     {element.favCity}
                   </span>
 
-                  <button
-                    onClick={() => handleCheckWeather(element.favCity)
-
-                    }
-                    className="
-                      px-3 py-1.5 rounded-md
-                      bg-teal-500 hover:bg-teal-600
-                      dark:bg-purple-600 dark:hover:bg-purple-700
-                      text-white text-sm flex items-center gap-1.5
+                  <DialogClose>
+                    <button
+                      onClick={() => {
+                        handleCheckWeather(element.favCity);
+                      }}
+                      className="
+                    px-3 py-1.5 rounded-md
+                    bg-teal-500 hover:bg-teal-600
+                    dark:bg-purple-600 dark:hover:bg-purple-700
+                    text-white text-sm flex items-center gap-1.5
                     "
-                  >
-                    <Cloud className="w-4 h-4" />
-                    <span className="hidden sm:inline">Check</span>
-                  </button>
+                    >
+                      <Cloud className="w-4 h-4" />
+                      <span className="hidden sm:inline">Check</span>
+                    </button>
+                  </DialogClose>
 
                   <button
                     onClick={() => removeFromFavourites(element.favCity)}
@@ -102,4 +105,3 @@ export default function Favourites({ setCity, button }: FavouritesProps) {
     </Dialog>
   );
 }
-

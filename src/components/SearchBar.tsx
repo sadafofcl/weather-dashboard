@@ -296,7 +296,7 @@ export default function SearchBar({ setCity }: SearchBarProps) {
           )}
 
           {/*  EMPTY STATE  */}
-          {shouldShowSuggestions && !isLoading && suggestions.length === 0 && (
+          {/* {shouldShowSuggestions && !isLoading && suggestions.length === 0 && (
             <div className="absolute top-full left-0 right-0 mt-2 z-50">
               <div className="w-full bg-white dark:bg-gray-800 border-2 border-purple-300 dark:border-purple-700 rounded-lg shadow-2xl p-6 text-center">
                 <MapPin className="w-12 h-12 mx-auto text-gray-400 mb-2" />
@@ -305,7 +305,7 @@ export default function SearchBar({ setCity }: SearchBarProps) {
                 </p>
               </div>
             </div>
-          )}
+          )} */}
         </div>
 
         {/*  BUTTONS  */}

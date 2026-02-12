@@ -9,15 +9,15 @@ import Footer from './components/Footer';
 import NetworkComponent from './components/NetworkComponent';
 
 function App() {
- const [city, setCity] = useState<string>("Mohali, Punjab, IN")
-  const { currWeatherData, forcastData, loading, error}=useFetch({city});
+ const [city, setCity] = useState<string>("Mumbai")
+  const { currWeatherData, forcastData, loading, error, fetchWeatherByCoords}=useFetch({city});
 
   return (
     <>
       <Header/>
       <NetworkComponent/>
       <SearchBar setCity={setCity}/>
-      <CurrentWeather city={city} currWeatherData={currWeatherData} loading={loading} error={error}/>
+      <CurrentWeather city={city} currWeatherData={currWeatherData} loading={loading} error={error} fetchWeatherByCoords={fetchWeatherByCoords} setCity={setCity}/>
       <FiveDayForcast city={city} forcastData={forcastData} loading={loading} error={error}/>
       <Footer/>
     </>

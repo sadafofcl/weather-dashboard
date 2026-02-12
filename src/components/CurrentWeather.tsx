@@ -1,6 +1,7 @@
 import LoadingStatesSkeleton from "./LoadingStatesSkeleton";
 import IconsForConditions from "./IconsForConditions";
 import WeatherCard from "./WeatherCard";
+import { MapPinHouse } from "lucide-react";
 import {
   Thermometer,
   Wind,
@@ -21,6 +22,8 @@ interface CurrentWeatherProps {
   currWeatherData: any;
   loading: boolean;
   error: string | null;
+  fetchWeatherByCoords?: (lat: number, lon: number) => void;
+  setCity?: (city: string) => void;
 }
 
 const formatTime = (utc: number, timezone: number): string => {
@@ -39,19 +42,50 @@ export default function CurrentWeather({
   loading,
   error,
   city,
+  fetchWeatherByCoords,
+  setCity
 }: CurrentWeatherProps) {
-
   if (!city) return <EmptyState message="Enter a city for 5-day forecast" />;
   if (loading) return <LoadingStatesSkeleton />;
   if (error) return <ErrorState error={error} />;
-  if (!currWeatherData)
-    return <EmptyState message="No current weather data available" />;
+  if (!currWeatherData || !currWeatherData.main || !currWeatherData.weather) {
+  return <EmptyState message="No current weather data available" />;
+}
+
 
   const { main, weather, wind, clouds, visibility, sys, timezone } =
     currWeatherData;
 
+   const handleLocationClick = async () => {
+  if (!navigator.geolocation) {
+    alert("Geolocation is not supported by your browser");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(async (position) => {
+    const cityName = await fetchWeatherByCoords?.(
+      position.coords.latitude,
+      position.coords.longitude
+    );
+    if (cityName) setCity(cityName);
+  });
+};
+
+
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-6 space-y-6">
+      <button
+        onClick={handleLocationClick}
+        className="mt-4 inline-flex items-center gap-2 px-5 py-3
+                   bg-linear-to-r from-purple-600 via-pink-600 to-orange-600
+                   text-white font-semibold rounded-xl shadow-lg
+                   hover:opacity-90 transition active:scale-95
+                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400"
+      >
+        <MapPinHouse className="w-5 h-5 text-white" />
+        <span>Use My Current Location</span>
+      </button>
+
       <header className="text-center">
         <h2
           className="text-2xl sm:text-3xl lg:text-4xl font-extrabold 
@@ -70,37 +104,35 @@ export default function CurrentWeather({
              shadow-2xl text-white"
       >
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8">
-
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="p-3 sm:p-4 rounded-full bg-white/20 backdrop-blur-sm">
               <Thermometer className="w-6 h-6 sm:w-8 sm:h-8" />
             </div>
 
             <div className="text-center sm:text-left">
-                <p className="text-xs opacity-80 uppercase tracking-wide">
-                  Temperature
-                </p>
-                <p className="text-5xl sm:text-6xl font-extrabold leading-none">
-                  {Math.round(main.temp)}°C
-                </p>
-                <p className="text-sm opacity-90 mt-1">
-                  Feels like {Math.round(main.feels_like)}°C
-                </p>
+              <p className="text-xs opacity-80 uppercase tracking-wide">
+                Temperature
+              </p>
+              <p className="text-5xl sm:text-6xl font-extrabold leading-none">
+                {Math.round(main.temp)}°C
+              </p>
+              <p className="text-sm opacity-90 mt-1">
+                Feels like {Math.round(main.feels_like)}°C
+              </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3 sm:gap-4">
             <IconsForConditions i={weather[0].icon} />
             <div className="text-center sm:text-left">
-                <p className="text-xs opacity-80 uppercase tracking-wide">
-                  Conditions
-                </p>
-                <p className="text-lg sm:text-2xl font-bold uppercase">
-                  {weather[0].description}
-                </p>
+              <p className="text-xs opacity-80 uppercase tracking-wide">
+                Conditions
+              </p>
+              <p className="text-lg sm:text-2xl font-bold uppercase">
+                {weather[0].description}
+              </p>
             </div>
           </div>
-
         </div>
       </div>
 

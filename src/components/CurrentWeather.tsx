@@ -23,19 +23,23 @@ interface CurrentWeatherProps {
   error: string | null;
 }
 
+const formatTime = (utc: number, timezone: number): string => {
+  const localTime = new Date((utc + timezone) * 1000);
+
+  return localTime.toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "UTC",
+  });
+};
+
 export default function CurrentWeather({
   currWeatherData,
   loading,
   error,
   city,
 }: CurrentWeatherProps) {
-  const formatTime = (utc: number, timezone: number): string => {
-    return new Date((utc + timezone) * 1000).toLocaleTimeString("en-IN", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
 
   if (!city) return <EmptyState message="Enter a city for 5-day forecast" />;
   if (loading) return <LoadingStatesSkeleton />;

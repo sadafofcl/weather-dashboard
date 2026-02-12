@@ -87,6 +87,22 @@ export default function SearchBar({ setCity }: SearchBarProps) {
 
   const handleSearchSubmit = () => {
     if (!searchVal.trim()) return;
+
+    const match = suggestions.find(
+      (city) =>
+        `${city.name}${city.state ? `, ${city.state}` : ""}, ${city.country}`.toLowerCase() ===
+        searchVal.toLowerCase(),
+    );
+
+    if (!match) {
+      setToast({
+        show: true,
+        message: "Please select a valid city from suggestions",
+        type: "error",
+      });
+      return;
+    }
+
     selectCity(searchVal);
   };
 

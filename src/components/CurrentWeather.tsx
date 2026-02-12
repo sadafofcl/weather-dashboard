@@ -67,7 +67,10 @@ export default function CurrentWeather({
       position.coords.latitude,
       position.coords.longitude
     );
-    if (cityName) setCity(cityName);
+
+    if (cityName && setCity) {
+      setCity(cityName); 
+    }
   });
 };
 

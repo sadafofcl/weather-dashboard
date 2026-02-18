@@ -2,9 +2,11 @@ import { MapPinHouse } from "lucide-react";
 
 interface Prop {
   fetchWeatherByCoords: (lat: number, lon: number) => Promise<void>;
+  setResetSearch: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function CurrentLocation({ fetchWeatherByCoords }: Prop) {
+export default function CurrentLocation({ fetchWeatherByCoords,setResetSearch }: Prop) {
+
   const handleLocationClick = () => {
     if (!navigator.geolocation) {
       alert("Geolocation is not supported by your browser");
@@ -13,6 +15,7 @@ export default function CurrentLocation({ fetchWeatherByCoords }: Prop) {
 
     navigator.geolocation.getCurrentPosition((position) => {
       fetchWeatherByCoords(position.coords.latitude, position.coords.longitude);
+      setResetSearch(true);
     });
   };
 

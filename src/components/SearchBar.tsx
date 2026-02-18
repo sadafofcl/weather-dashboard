@@ -19,6 +19,7 @@ interface City {
 
 interface SearchBarProps {
   setCity: Dispatch<SetStateAction<string>>;
+  resetSearch?: boolean;
 }
 
 type ToastType = "success" | "error" | "info";
@@ -31,7 +32,7 @@ interface ToastState {
 
 /*  COMPONENT  */
 
-export default function SearchBar({ setCity }: SearchBarProps) {
+export default function SearchBar({ setCity, resetSearch }: SearchBarProps) {
   /*  STATE  */
 
   const [searchVal, setSearchVal] = useState("");
@@ -206,6 +207,15 @@ export default function SearchBar({ setCity }: SearchBarProps) {
         setIsLoading(false);
       });
   }, [debounceCheck, isSelected]);
+
+  //when using current location
+  useEffect(() => {
+    if (resetSearch) {
+      setSearchVal("");
+      setIsSelected(false);
+      resetSuggestions();
+    }
+  }, [resetSearch]);
 
   return (
     <section className="w-full max-w-4xl mx-auto px-4 py-6">

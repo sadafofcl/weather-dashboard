@@ -45,24 +45,34 @@ export default function ForecastCard({ item }: { item: ForecastItem }){
     hover:border-teal-300 dark:hover:border-purple-600
     transition-all duration-300 h-full"
     >
-      {/* Time stamp */}
+      
       <div className="text-center mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-gray-200 dark:border-gray-700">
         <h3 className="text-lg sm:text-xl font-bold text-teal-700 dark:text-purple-300">
           {formatTime(item.dt_txt)}
         </h3>
       </div>
 
-      {/* Weather Icon & Description */}
+     
       <div className="flex flex-col items-center mb-4 sm:mb-6">
         <div className="mb-2 sm:mb-3 scale-90 sm:scale-100">
           <IconsForConditions i={item.weather[0].icon} />
+          
+        {/* <img
+          src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.svg`}
+          alt={item.weather[0].description}
+          className="w-16 h-16"
+        /> */}
+
+
+
+
         </div>
         <p className="text-sm sm:text-base font-semibold uppercase text-center text-gray-800 dark:text-gray-200">
           {item.weather[0].description}
         </p>
       </div>
 
-      {/* Main Temperature */}
+      
       <div
         className="text-center mb-4 sm:mb-6 p-3 sm:p-4 rounded-xl
         bg-linear-to-r from-purple-100 to-pink-100
@@ -76,7 +86,7 @@ export default function ForecastCard({ item }: { item: ForecastItem }){
         </p>
       </div>
 
-      {/* Weather Details */}
+      
       <div className="grid grid-cols-2 gap-2 sm:gap-3">
         <WeatherDetailCard
           icon={<Thermometer className="w-4 h-4 text-teal-600 dark:text-purple-400" />}

@@ -43,7 +43,7 @@ export default function FiveDayForecast({
   error,
 }: FiveDayForecastProps) {
 
-  if (!city) return <EmptyState message="Enter a city for 5-day forecast" />;
+  if (!city) return <EmptyState message="" />;
   if (loading) return <LoadingStatesSkeleton />;
   if (error) return <ErrorState error={error} />;
   if (!forcastData) return <EmptyState message="No forecast data available" />;

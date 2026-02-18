@@ -7,9 +7,10 @@ import SearchBar from './components/SearchBar';
 import { useState } from 'react';
 import Footer from './components/Footer';
 import NetworkComponent from './components/NetworkComponent';
+import CurrentLocation from './components/CurrentLocation';
 
 function App() {
- const [city, setCity] = useState<string>("Delhi")
+ const [city, setCity] = useState<string>("")
   const { currWeatherData, forcastData, loading, error, fetchWeatherByCoords}=useFetch({city});
 
   return (
@@ -17,7 +18,13 @@ function App() {
       <Header/>
       <NetworkComponent/>
       <SearchBar setCity={setCity}/>
-      <CurrentWeather city={city} currWeatherData={currWeatherData} loading={loading} error={error} fetchWeatherByCoords={fetchWeatherByCoords} setCity={setCity}/>
+      <CurrentLocation fetchWeatherByCoords={async (lat, lon) => {
+    const cityName = await fetchWeatherByCoords(lat, lon);
+    if (cityName) {
+      setCity(cityName);
+    }
+  }}/>
+      <CurrentWeather city={city} currWeatherData={currWeatherData} loading={loading} error={error} />
       <FiveDayForcast city={city} forcastData={forcastData} loading={loading} error={error}/>
       <Footer/>
     </>

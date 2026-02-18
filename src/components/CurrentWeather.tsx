@@ -1,7 +1,6 @@
 import LoadingStatesSkeleton from "./LoadingStatesSkeleton";
 import IconsForConditions from "./IconsForConditions";
 import WeatherCard from "./WeatherCard";
-import { MapPinHouse } from "lucide-react";
 import {
   Thermometer,
   Wind,
@@ -22,10 +21,7 @@ interface CurrentWeatherProps {
   currWeatherData: any;
   loading: boolean;
   error: string | null;
-  fetchWeatherByCoords?: (lat: number, lon: number) => void;
-  setCity?: (city: string) => void;
 }
-
 const formatTime = (utc: number, timezone: number): string => {
   const localTime = new Date((utc + timezone) * 1000);
 
@@ -42,61 +38,23 @@ export default function CurrentWeather({
   loading,
   error,
   city,
-  fetchWeatherByCoords,
-  setCity
 }: CurrentWeatherProps) {
-  if (!city) return <EmptyState message="Enter a city for 5-day forecast" />;
   if (loading) return <LoadingStatesSkeleton />;
   if (error) return <ErrorState error={error} />;
-  if (!currWeatherData || !currWeatherData.main || !currWeatherData.weather) {
-  return <EmptyState message="No current weather data available" />;
-}
-
+  if (!currWeatherData)
+    return <EmptyState message="Search a city or use current location" />;
 
   const { main, weather, wind, clouds, visibility, sys, timezone } =
     currWeatherData;
 
-   const handleLocationClick = async () => {
-  if (!navigator.geolocation) {
-    alert("Geolocation is not supported by your browser");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(async (position) => {
-    const cityName = await fetchWeatherByCoords?.(
-      position.coords.latitude,
-      position.coords.longitude
-    );
-
-    if (cityName && setCity) {
-      setCity(cityName); 
-    }
-  });
-};
-
-
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-6 space-y-6">
-      <div className="flex justify-center mt-4">
-        <button
-          onClick={handleLocationClick}
-          className="mt-4 inline-flex items-center gap-2 px-5 py-3
-                    bg-linear-to-r from-purple-600 via-pink-600 to-orange-600
-                    text-white font-semibold rounded-xl shadow-lg
-                    hover:opacity-90 transition active:scale-95
-                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400"
-        >
-          <MapPinHouse className="w-5 h-5 text-white" />
-          <span>Use My Current Location</span>
-        </button>
-      </div>
-
       <header className="text-center">
         <h2
           className="text-2xl sm:text-3xl lg:text-4xl font-extrabold 
-                       text-transparent bg-clip-text bg-linear-to-r 
-                       from-orange-600 to-purple-600 
-                       dark:from-orange-400 dark:to-purple-400"
+          text-transparent bg-clip-text bg-linear-to-r 
+          from-orange-600 to-purple-600 
+          dark:from-orange-400 dark:to-purple-400"
         >
           Today's Weather for {city}
         </h2>
@@ -104,9 +62,9 @@ export default function CurrentWeather({
 
       <div
         className="p-6 sm:p-8 rounded-2xl
-             bg-linear-to-r from-purple-600 via-pink-600 to-orange-600
-             dark:from-purple-800 dark:via-pink-800 dark:to-orange-800
-             shadow-2xl text-white"
+        bg-linear-to-r from-purple-600 via-pink-600 to-orange-600
+        dark:from-purple-800 dark:via-pink-800 dark:to-orange-800
+        shadow-2xl text-white"
       >
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8">
           <div className="flex items-center gap-3 sm:gap-4">

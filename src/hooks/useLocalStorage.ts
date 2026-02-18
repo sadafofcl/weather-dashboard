@@ -7,7 +7,7 @@ export default function useLocalStorage<T>(key: string, initialValue: T) {
         return item ? (JSON.parse(item) as T) : initialValue;
     }
     catch{
-        return initialValue
+        return initialValue;
     }
   });
 

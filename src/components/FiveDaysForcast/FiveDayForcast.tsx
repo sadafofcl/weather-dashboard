@@ -1,8 +1,8 @@
-import EmptyState from "./EmptyState";
-import ErrorState from "./ErrorState";
-import LoadingStatesSkeleton from "./LoadingStatesSkeleton";
+import EmptyState from "../States/EmptyState";
+import ErrorState from "../States/ErrorState";
+import LoadingStatesSkeleton from "../States/LoadingStatesSkeleton";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import ForecastCard from "./ForcastCard";
+import ForecastCard from "../FiveDaysForcast/ForcastCard";
 
 
 interface ForecastItem {

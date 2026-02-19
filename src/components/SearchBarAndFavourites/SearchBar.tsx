@@ -4,8 +4,8 @@ import { FavouritesContext } from "@/context/FavouritesContext";
 import { Search, Star, MapPin, Loader2, BookMarked, X } from "lucide-react";
 import ButtonsForSearchBarComponent from "./ButtonsForSearchBarComponent";
 import type { Dispatch, SetStateAction } from "react";
-import Favourites from "./Favourites";
-import Toast from "./Toast";
+import Favourites from "../SearchBarAndFavourites/Favourites";
+import Toast from "../States/Toast";
 
 /*  TYPES  */
 

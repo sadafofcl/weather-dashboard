@@ -1,6 +1,6 @@
 import { Thermometer, Droplets, Wind, Gauge, Cloud, Eye } from "lucide-react";
-import IconsForConditions from "./IconsForConditions";
-import WeatherDetailCard from "./WeatherDetailCard";
+import IconsForConditions from "../FiveDaysForcast/IconsForConditions";
+import WeatherDetailCard from "../FiveDaysForcast/WeatherDetailCard";
 interface ForecastItem {
   dt: number;
   dt_txt: string;

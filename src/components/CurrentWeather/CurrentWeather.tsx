@@ -1,5 +1,5 @@
-import LoadingStatesSkeleton from "./LoadingStatesSkeleton";
-import IconsForConditions from "./IconsForConditions";
+import LoadingStatesSkeleton from "../States/LoadingStatesSkeleton";
+import IconsForConditions from "../FiveDaysForcast/IconsForConditions";
 import WeatherCard from "./WeatherCard";
 import {
   Thermometer,
@@ -13,8 +13,8 @@ import {
   ArrowUp,
   ArrowDown,
 } from "lucide-react";
-import ErrorState from "./ErrorState";
-import EmptyState from "./EmptyState";
+import ErrorState from "../States/ErrorState";
+import EmptyState from "../States/EmptyState";
 
 interface CurrentWeatherProps {
   city: string;

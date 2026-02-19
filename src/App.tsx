@@ -1,12 +1,12 @@
 import './App.css'
-import CurrentWeather from './components/CurrentWeather';
-import FiveDayForcast from './components/FiveDayForcast';
-import Header from './components/Header';
+import CurrentWeather from './components/CurrentWeather/CurrentWeather';
+import FiveDayForcast from './components/FiveDaysForcast/FiveDayForcast';
+import Header from './components/Header/Header';
 import useFetch from './hooks/useFetch';
-import SearchBar from './components/SearchBar';
+import SearchBar from './components/SearchBarAndFavourites/SearchBar';
 import { useState } from 'react';
 import Footer from './components/Footer';
-import NetworkComponent from './components/NetworkComponent';
+import NetworkComponent from './components/States/NetworkComponent';
 import CurrentLocation from './components/CurrentLocation';
 
 function App() {
